@@ -81,7 +81,7 @@ void Logger::LogPosition(double currentPosition)
 
     // Convert to local time using localtime_s
     std::tm now_tm;
-    localtime_s(&now_tm, &now_c);  // Use localtime_s for thread-safe conversion
+    localtime_r(&now_c, &now_tm);  // Use localtime_s for thread-safe conversion
 
     // Format the date and time
     std::ostringstream dateTimeStream;

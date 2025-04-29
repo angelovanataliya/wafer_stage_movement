@@ -5,14 +5,21 @@
 #include "defines.h"
 
 
-int main()
+int main(int argc, char *argv[])
 {
 	WaferStage stage(0.0);
 	MovesParser movesParser;
 	std::vector<Movement> moves;
 
+	if (argc != 2)
+	{
+		std::cout << "Argument 'moves-file' not supplied!\n";
+		return 1;
+	}
+
+	const std::string filename = argv[1];
 	// Read the different moves from the file
-	moves = movesParser.ParseMoves(MOVES_FILENAME);
+	moves = movesParser.ParseMoves(filename);
 
 	// Check if the file with Moves was read properly
 	if (moves.empty()) 
