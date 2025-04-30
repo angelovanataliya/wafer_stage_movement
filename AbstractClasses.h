@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 struct Movement
 {
     double targetPosition;

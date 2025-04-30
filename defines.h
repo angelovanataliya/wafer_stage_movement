@@ -4,5 +4,4 @@
 #define FPS				24			// Frames Per Second
 #define FRAME_DURATION	1000 / FPS	// The duration of each frame according to the FPS
 
-#define MOVES_FILENAME	"moves.txt"	// The name of the file from which the input with the moves will be read
 #define LOG_FILENAME	"log.txt"	// The name of the file which will be used to log each update of the current position of the wafer stage
