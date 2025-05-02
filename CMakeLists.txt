@@ -8,4 +8,7 @@ add_executable(wafer_stage
     WaferStage.cpp
 )
 
-target_link_libraries(wafer_stage pthread)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(wafer_stage Threads::Threads)
+
