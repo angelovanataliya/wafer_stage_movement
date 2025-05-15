@@ -24,7 +24,7 @@ jobs:
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
         os: [ubuntu-latest, windows-latest]
-        build_type: [release]
+        build_type: [debug]
         c_compiler: [gcc, clang, cl]
         include:
           - os: windows-latest
@@ -53,7 +53,9 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-        echo "BUILD_TYPE=${{ vars.BUILD_TYPE }}" >> $GITHUB_ENV
+
+    - name: Override Build Type with Repository Variable
+      run: echo "BUILD_TYPE=${{ vars.BUILD_TYPE }}" >> $GITHUB_ENV
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -62,15 +64,15 @@ jobs:
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ vars.BUILD_TYPE }}
+        -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
         -S ${{ github.workspace }}
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config  $BUILD_TYPE
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest --build-config ${{ matrix.build_type }}
+      run: ctest --build-config $BUILD_TYPE
